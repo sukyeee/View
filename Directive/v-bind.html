@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div id="bindId"> {{ textId }} </div>
+
+        <div v-bind:id="bindId"> {{ textId }} </div> <!-- v-bind는 attribute를 지정하는 것! -->
+
+        <a v-bind:href="bindUrl">{{textUrl}}</a>
+        <br>
+
+        <div v-bind:data-boardId="boardId">6789 게시글</div> <!-- data- 없애도 그대로 나오는듯?! -->
+
+
+        <br>
+        <img v-bind:src="bindSrc" alt="hamster2">
+        <br>
+        <img :src="bindSubSrc" alt="hamster1">
+        <br>
+        
+
+        <input type="text" :value="textVal">
+        
+        
+    </div>
+ 
+    <script>
+      
+    
+
+        new Vue({
+            el: '#app',
+            data: function(){
+                return {
+                    textId: 'v-bind-Id',
+                    bindId: '12345',
+                    textUrl: 'google.com',
+                    bindUrl: 'https://google.com',
+
+                    boardId: '6789',
+
+                    textSrc: 'lee',
+                    bindSrc: 'hamster2.jpg',
+                    bindSubSrc: './img/hamster1.jpg',
+                    srcId: 'picture',
+
+                    textVal: '안녕~'
+                }
+            },
+        
+        }); 
+
+
+       
+
+    </script>
+
+</body>
+</html>

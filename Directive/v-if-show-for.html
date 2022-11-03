@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        
+        <div v-if="flagIf">v-if 보이나요?</div>
+        <div v-show="flagShow">v-show 보이나요?</div>
+        <br>
+        <ul>
+            <li v-for="(item, index) in arrayItems" :key="index">{{item}}</li>
+        </ul>
+        <ul>
+            <li v-for="(item, index) in objectArrayItems" :key="index">{{item.name}} {{item.price}}</li>
+        </ul>
+        
+        <!-- <div v-if="isLogin">로그아웃 / {{useName}} </div> <div v-if="isLogin">login</div> -->
+        
+        <!-- v-for 반복적인 rendering을 할 때 v-for 와 v-if 동시에 사용 X 권고 -->
+        <!-- computed 를 활용 -->
+        <ul>
+            <li v-for="(item, index) in filteredItems" :key="index">{{item.name}} {{item.price}}</li>
+        </ul>
+        <ul>
+            <li v-for="(item, index) in filteredAnimals" :key="index">{{item.animal}} {{item.color}}</li>
+        </ul>
+    </div>
+ 
+    <script>
+        // isLogin <== true / false
+        // if( isLogin ){
+        //     document.querySelector("").style
+        // }
+
+        let studylist = ['java', 'spring', 'vue']; // 문자열 배열
+        let objectList = [
+            { name: 'java', price: 2000 },
+            { name: 'spring', price: 3000 },
+            { name: 'vue', price: 4000 },
+            { name: 'Boot', price: 5000 },
+        ]; // object 배열 
+
+        let animalList = [
+            { animal: 'cat', color: 'beige' },
+            { animal: 'dog', color: 'beige' },
+            { animal: 'hamster', color: 'beige' },
+            { animal: 'pig', color: 'pink' },
+        ]; 
+        const vue = new Vue({
+            el: '#app',
+            data: function(){
+                return {  
+                  flagIf: true, // v-if
+                  flagShow: true, // v-for
+                  arrayItems: studylist, // for
+                  objectArrayItems: objectList, // for
+                  animalItems: animalList
+                }
+            },
+            computed: {
+                filteredItems: function(){
+                    return this.objectArrayItems.filter( el => el.price > 3000 );
+                },
+                filteredAnimals: function(){
+                    return this.animalItems.filter( el =>  el.color == 'beige')
+                }
+            }
+        }); 
+
+
+    </script>
+
+</body>
+</html>

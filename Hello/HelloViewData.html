@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="app1">{{ text }}</div>
+    
+    <script>
+        const vue = new Vue({
+            el: '.app1', 
+            // data #1 : function
+            // data: function(){
+            //     return {
+            //         text: 'Hello, Vue!'
+            //     }
+            // }
+
+            // data #2 : function 축약 
+            data(){
+                return {   // return 빼먹으면 안된다!
+                    text: 'Hello, Vue!'
+                }
+            }
+
+            // data #3 : object <= vue-cli 에서 지원 x <= 사용 X
+            // data:{
+            //     text: 'Hello, Vue!'   
+            // }
+
+
+        }); 
+
+    </script>
+
+</body>
+</html>

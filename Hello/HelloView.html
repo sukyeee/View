@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="app1">{{ text }}</div>
+
+    <div class="app2">{{ text }}</div>
+
+    <script>
+        // vue 객체 만드는 코드, 파라미터로 설정을 가진 객체를 전달 
+        const vue = new Vue({
+            // dom 의 누구와 연결 , css 선택자 
+            // data : 사용되는 javascript 변수나 객체들
+            // method : data 를 이용해서 필요한 기능을 수행
+            
+            el: '.app1', // 또는 div 등 css 선택자
+            // data : 사용되는 javascript 변수나 객체들
+            data: function(){
+                return {
+                    text: 'Hello, Vue!'
+                }
+            }
+            // method : data 를 이용해서 필요한 기능을 수행 
+        }); 
+
+
+        // vue 객체 만드는 코드, 파라미터로 설정을 가진 객체를 전달 
+        const vue2 = new Vue({
+            // dom 의 누구와 연결 , css 선택자 
+            // data : 사용되는 javascript 변수나 객체들
+            // method : data 를 이용해서 필요한 기능을 수행
+            
+            el: '.app2', // 또는 div 등 css 선택자
+            // data : 사용되는 javascript 변수나 객체들
+            data: function(){
+                return {
+                    text: 'Hello, Vue!'
+                }
+            }
+            // method : data 를 이용해서 필요한 기능을 수행 
+        }); 
+    </script>
+
+</body>
+</html>

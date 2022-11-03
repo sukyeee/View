@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div v-text="css">회색</div>
+        <div v-html="css">회색</div>
+        <div v-once="css">회색</div> <!-- 잘못 사용 -->
+        <div v-once="css">{{css}}</div>
+    
+ 
+    <script>
+      
+      let value = {
+        css: `<span style="background-color: lightgray">회색</span>`
+      }
+
+
+        new Vue({
+            el: '#app',
+            data: function(){
+                return value; // return object
+                // return {
+                //     css : `<span style="background-color: lightgrey">회색</span>`
+                // }
+            },
+        
+        }); 
+
+
+        setTimeout(changeCss, 5000);
+
+        function changeCss(){
+            value.css = `<span style="background-color: green">녹색</span>`
+        }
+
+    </script>
+
+</body>
+</html>
