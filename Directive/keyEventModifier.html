@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+ 
+
+</head>
+<body>
+    <div id="app">
+        <input type="text" @keyup="keyHandler" 
+            @keyup.enter="enterKey" @keyup.page-down="pageDown" @keyup.delete="deleteKey" >
+            <br>
+            <span>Key Code : {{ keycode }} </span>
+
+            <br>
+
+            <input type="text" @input="keyHangul=$event.target.value" 
+                @keyup="hangul1" >
+            <br>
+            <span>Key Code : {{ keycode }} </span>
+
+    </div>
+ 
+    <script>
+      
+    
+    
+        const vue = new Vue({
+            el: '#app',
+            data: function(){
+                return {
+                    keycode: 0,
+                    keyHangul: ''
+                }
+            },
+            methods: {
+                keyHandler(e){
+                    console.log(e.key);
+                    this.keycode = e.key;
+                },
+                enterKey(){
+                    console.log("Enter Key")
+                },
+                pageDown(){
+                    console.log("pageDown Key")
+                },
+                deleteKey(){
+                    console.log("delete Key")
+                },
+                hangul1(){
+                    console.log( this.keyHangul )
+                }
+
+            }
+        }); 
+
+
+       
+
+    </script>
+
+</body>
+</html>

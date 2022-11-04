@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- methods 를 {{ }} 안에 사용할 때는 () 를 포함 return 결과가 있어야 한다. -->
+        <!-- 사용하는 만큼 ( method를 호출하는 만큼 ) 실제 method가 호출된다. -->
+        <!-- update되면 다시 사용된 만큼 호출된다. -->
+
+        <!-- Vue 객체에서 특정한 기능을 수행하기 위해 생성, 가장 일반적인 형태 -->
+        <div>{{ text }}</div>
+        <div>{{ reversedText() }}</div> 
+        <div>{{ reversedText() }}</div> 
+        <div>{{ reversedText() }}</div> 
+
+        <button @click="changeText">click</button>
+        
+    </div>
+ 
+    <script>
+      
+    
+
+        new Vue({
+            el: '#app',
+            data: function(){
+                return {
+                    text: '안녕하세요, Vue'
+                }
+            },
+            methods: {
+                reversedText: function(){
+                    console.log("reversedText !!!")
+                    return this.text.split('').reverse().join('');
+                },
+                changeText(){
+                    this.text = 'Hello, Vue'
+                }
+            }
+        
+        }); 
+
+
+       
+
+    </script>
+
+</body>
+</html>

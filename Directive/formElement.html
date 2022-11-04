@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+ 
+
+</head>
+<body>
+    <div id="app">
+        <h4>Input Text</h4>
+        <input type="text" v-model="inputText">
+
+        <h4>Textarea</h4>
+        <textarea v-model="textareaText"  cols="30" rows="10"></textarea>
+
+        <!-- 한 개는 true / false -->
+        <h4>Checkbox</h4>
+        <input type="checkbox" v-model="checkboxValue" id="">
+
+        <!-- 복수 개는 배열로 값-->
+        <h4>Checkbox multiple</h4>
+        <input type="checkbox" v-model="checkboxValueList" value="J" id="java"><label for="java">Java</label>
+        <input type="checkbox" v-model="checkboxValueList" value="S" id="spring"><label for="spring">Spring</label>
+        <input type="checkbox" v-model="checkboxValueList" value="V" id="vue"><label for="vue">Vue</label>
+
+        <!-- 보여지는 건 복수, 선택되는 건 한 개 -->
+        <h4>Radio</h4>
+        <input type="radio" value="F" v-model="radioValue" id="football"><label for="football">축구</label>
+        <input type="radio" value="B" v-model="radioValue" id="baseball"><label for="baseball">야구</label>
+
+        <h4>Select 한개 선택</h4>
+        <select v-model="selectValue">
+            <option value="C">Camping</option>
+            <option value="D">Drawing</option>
+            <option value="S">Singing</option>
+        </select>
+
+        <h4>Select 여러개 선택</h4>
+        <select v-model="selectValueList" multiple>
+            <option value="C">Camping</option>
+            <option value="D">Drawing</option>
+            <option value="S">Singing</option>
+        </select>
+    </div>
+ 
+    <script>
+      
+    
+    
+        const vue = new Vue({
+            el: '#app',
+            data: function(){
+                return {
+                  // input text
+                  inputText: '12345',
+                  // textarea
+                  textareaText: '내용을 담는 textarea',
+                  // checkbox
+                  checkboxValue: false,
+                  checkboxValueList: ['S', 'V'], // 초기값 
+                  // radio
+                  radioValue: 'F',
+                  // select
+                  selectValue: 'S',
+                  // select multiple
+                  selectValueList: ['S'],
+                }}
+        
+            
+        }); 
+
+
+       
+
+    </script>
+
+</body>
+</html>

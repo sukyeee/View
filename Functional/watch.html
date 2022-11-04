@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- watch는 {{}} 안에 보여주기 위한 function 이 아니다.  -->
+        <!-- 대상이 되는 property의 값이 변경되면 1회 호출되고,  parameter로 변경전, 변경후 값을 전달 -->
+        <!-- 대상이 되는 property 가 update되면 1회 호출된다. -->
+        <!-- 대상이 변경되면 호출되는 일종의 callback-->
+
+        <!-- 주요 property의 변경에 대한 event callback -->
+        <div>{{ text }}</div>
+        <div>{{ reversedText }}</div> 
+        <div>{{ reversedText }}</div> 
+        <div>{{ reversedText }}</div> 
+        <!-- 3번 사용이 되었는데 computed는 콘솔에 1번만 호출된다! -->
+        <button @click="changeText">click</button>
+        
+    </div>
+ 
+    <script>
+      
+    
+
+        new Vue({
+            el: '#app',
+            data: function(){
+                return {
+                    text: '안녕하세요, Vue',
+                    reversedText: ''
+                }
+            },
+            watch:{ // property text를 모니터링 하다가 text가 변경되면 변경후, 변경 전 값을 전달해 준다.
+                text: function(newVal, oldVal){
+                    console.log(oldVal, '/' , newVal)
+                    this.reversedText = this.text.split('').reverse().join('');
+                },
+            },
+            methods: {
+                changeText(){
+                    this.text = 'Hello, Vue'
+                }
+            },
+            created(){
+                console.log(this);
+            }
+        
+        }); 
+
+
+       
+
+    </script>
+
+</body>
+</html>
