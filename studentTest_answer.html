@@ -68,11 +68,14 @@
             data() {
                 return {
                     studentList: [],
-                    student: {},
+                    student: {
+                        studentId: '',
+                        studentNm: '',
+                        email: '',
+                        phone: ''
+                    },
                     CURRENT_ID: '',
-
                 }
-
             },
             methods: {
                 async listStudent() {
@@ -82,6 +85,18 @@
                         let data = await response.json();
                         this.studentList = data
                     } catch (error) {
+                        console.log(error)
+                    }
+                },
+                async detailStudent(studentId){
+                    // get /students/123			
+                    let url = 'http://localhost:8080/students/' + studentId;
+                    
+                    try{
+                        let response = await fetch(url);
+                        let data = await response.json();
+                        this.makeDetailHtml(data);
+                    }catch(error){
                         console.log(error)
                     }
                 },
@@ -108,27 +123,7 @@
                     }
 
                 },
-                // makeListHtmlEventHandler(){
-                //     document.querySelectorAll("#tbodyStudent tr").forEach( el => {
-                //     el.onclick = function(){
-                //             let studentId = this.getAttribute("data-studentId");
-                //             console.log(studentId)
-                //             detailStudent(studentId);
-                //         }
-                //     })
-                // },
-                async detailStudent(studentId){
-                    // get /students/123			
-                    let url = 'http://localhost:8080/students/' + studentId;
-                    
-                    try{
-                        let response = await fetch(url);
-                        let data = await response.json();
-                        this.makeDetailHtml(data);
-                    }catch(error){
-                        console.log(error)
-                    }
-                },
+            
                 async makeDetailHtml(detail){
                     console.log(detail);
                     
