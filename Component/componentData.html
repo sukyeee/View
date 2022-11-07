@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <my-component1></my-component1>
+        <my-component2></my-component2>
+        
+        <my-component3></my-component3>
+        <my-component4></my-component4>
+        
+    </div>
+
+
+    <script>
+
+        const cmp1 = {
+            template: `<div>첫 번째 지역 컴포넌트 : {{ data1 }} </div>` ,
+            data: function(){
+                return {
+                    data1: 100
+                }
+            }
+        }
+        const cmp2 = {
+            template: `<div>첫 번째 지역 컴포넌트 : {{ data2 }} </div>` ,
+            data: function(){
+                return {
+                    data2: cmp1.data().data1 // 외부 javascript 변수를 통해서 접근 가능
+                }
+            }
+        }
+
+        Vue.component(
+            'table-component', // 이름 
+            {
+                template: `#table-template`        
+            }
+        );
+
+        // template 에 해당하는 HTML 을 body 안에 template tag를 이용해서 표현
+        // #id 연계
+        new Vue({
+            el: '#app',
+            components: {
+                'my-component1': cmp1,
+                'my-component2': cmp2,
+                'my-component3':  {
+                    template: `<div>첫 번째 지역 컴포넌트 : {{ data3 }} </div>` ,
+                    data: function(){
+                        return {
+                            data3: 300
+                        }
+                    }
+                },
+                'my-component4':  {
+                    template: `<div>첫 번째 지역 컴포넌트 : {{ data4 }} </div>` ,
+                    data: function(){
+                        return {
+                            data4: 400
+                            // 이 컴포넌트 안에서 컴포넌트3 호출 ex) this.components.my-component3.data().data3 등은 안된다!!
+                        }
+                    }
+                }
+                
+            }
+        });
+
+    </script>
+
+</body>
+</html>
