@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h4>Vue Router</h4>
+        <!-- link, view -->
+        <p>
+            <router-link to="/main">Main 컴포넌트</router-link>
+            <router-link to="/login">Login 컴포넌트</router-link>
+            <router-link to="/board">Board 컴포넌트</router-link>
+        </p>
+        <router-view></router-view><!-- 복수개 가능 -->
+        
+    </div>
+
+    <script>
+     
+        // javascript object
+        const MainComponent = { template : `<div>Main</div>` }
+        const loginComponent = { template : `<div>Login</div>` }
+        const boardComponent = { template : `<div>Board</div>` }
+        
+
+        // javascript array
+        const routes = [
+            { path: '/main', component: MainComponent },
+            { path: '/login', component: loginComponent },  
+            { path: '/board', component: boardComponent },  
+            
+        ];
+
+        // VueRouter 객체 생성
+        const router = new VueRouter(
+            // { routes : routes }   // { } 이거 안써주면 이상하게 나온당
+            {routes} // shorthand property
+        );
+
+        new Vue({
+            el: '#app',
+            router // shorthand property
+          
+        });
+
+    </script>
+
+</body>
+</html>
