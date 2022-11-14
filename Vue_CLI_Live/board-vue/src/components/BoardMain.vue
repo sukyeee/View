@@ -38,8 +38,9 @@
                             v-on:call-parent-move-page="movePage">
                             ></pagination-ui>
     
-            <button class="btn btn-primary" type="button" id="btnInsertPage">글쓰기</button>
+            <button class="btn btn-primary" type="button" @click="showInsertModal">글쓰기</button>
         </div>
+        <insert-modal v-on:call-parent-insert="closeAfterInsert"></insert-modal>
     </div>
 </template>
 
@@ -49,8 +50,11 @@ import http from "@/common/axios.js" // axios 객체
 import util from "@/common/util.js" 
 import PaginationUi from './PaginationUI.vue'
 
+import InsertModal from "@/components/modals/InsertModal.vue"; // vue 컴포넌트 
+import { Modal } from "bootstrap"; // vue 컴포넌트에서 bootstrap modal을 사요용하기 위함.
+
 export default {
-    components: { PaginationUi },
+    components: { PaginationUi, InsertModal },
     data(){
         return {
             limit: 10,
@@ -63,7 +67,10 @@ export default {
             totalListItemCount: 0, // pagination 사용
             listRowCount: 10,
             pageLinkCount: 10,
-            currentPageIndex: 1
+            currentPageIndex: 1,
+
+            // modal
+            insertModal: null // bootstrap Modal 객체를 할당( ui component 를 전달 )
         }
     },
 
@@ -89,7 +96,6 @@ export default {
                 }else {
                     this.list = data.list // 목록 
                     this.totalListItemCount = data.count; // 총 건수 
-                    
                 }
 
             } catch(error){
@@ -103,11 +109,22 @@ export default {
             this.offset = (pageIndex - 1)*this.listRowCount;
             this.currentPageIndex = pageIndex;
             this.boardList();
+        },
+        showInsertModal(){
+            this.insertModal.show();
+        },
+        closeAfterInsert(){
+            this.insertModal.hide();
+            this.boardList();
         }
     },
     created: function() {
         // vue 인스턴스가 만들어 질 때 수행이 됨.
         this.boardList();
+    },
+    mounted() {
+        // 모달 객체를 생성해서 data의 변수에 할당
+        this.insertModal = new Modal(document.querySelector("#insertModal"));
     },
     filters: {
         makeDateStr: function( date, type ){
