@@ -19,7 +19,7 @@
                     </tr>
                 </thead>
 
-                <tr style="cursor:pointer" v-for="(board, index) in list" :key="index" data-boardId=${boardId}>
+                <tr style="cursor:pointer" v-for="(board, index) in list" :key="index" data-boardId=${boardId}  @click="showDetailModal(board)"  v-bind:board="board" >
                     <td> {{ board.boardId }}</td>
                     <td> {{ board.userName }} </td>
                     <td> {{ board.title }} </td>
@@ -41,6 +41,7 @@
             <button class="btn btn-primary" type="button" @click="showInsertModal">글쓰기</button>
         </div>
         <insert-modal v-on:call-parent-insert="closeAfterInsert"></insert-modal>
+        <detail-modal v-bind:board="board"  ></detail-modal>
     </div>
 </template>
 
@@ -53,8 +54,10 @@ import PaginationUi from './PaginationUI.vue'
 import InsertModal from "@/components/modals/InsertModal.vue"; // vue 컴포넌트 
 import { Modal } from "bootstrap"; // vue 컴포넌트에서 bootstrap modal을 사요용하기 위함.
 
+import DetailModal from "@/components/modals/DetailModal.vue";
+
 export default {
-    components: { PaginationUi, InsertModal },
+    components: { PaginationUi, InsertModal, DetailModal },
     data(){
         return {
             limit: 10,
@@ -70,7 +73,13 @@ export default {
             currentPageIndex: 1,
 
             // modal
-            insertModal: null // bootstrap Modal 객체를 할당( ui component 를 전달 )
+            insertModal: null, // bootstrap Modal 객체를 할당( ui component 를 전달 )
+
+            detailModal: null,
+
+            board:{},
+       
+
         }
     },
 
@@ -116,6 +125,16 @@ export default {
         closeAfterInsert(){
             this.insertModal.hide();
             this.boardList();
+        },
+        showDetailModal(board) {
+          
+            this.board = board
+            console.log(this.board)
+            console.log(this.board.regDt.date.day)
+            this.detailModal.show();
+            
+     
+
         }
     },
     created: function() {
@@ -125,6 +144,7 @@ export default {
     mounted() {
         // 모달 객체를 생성해서 data의 변수에 할당
         this.insertModal = new Modal(document.querySelector("#insertModal"));
+        this.detailModal = new Modal(document.querySelector("#detailModal"));
     },
     filters: {
         makeDateStr: function( date, type ){

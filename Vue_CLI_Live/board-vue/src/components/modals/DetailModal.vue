@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Modal Detail-->
-        <div class="modal fade" id="boardDetailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
@@ -11,13 +11,13 @@
             <div class="modal-body">            
 		        <table class="table table-hover">
                 	<tbody>
-                		<tr><td>글 번호</td><td id="boardIdDetail">#</td></tr>
-                		<tr><td>제목</td><td id="titleDetail">#</td></tr>
-                		<tr><td>내용</td><td id="contentDetail">#</td></tr>
-                		<tr><td>작성자</td><td id="userNameDetail">#</td></tr>
-                		<tr><td>작성일시</td><td id="regDtDetail">#</td></tr>
-                		<tr><td>조회수</td><td id="readCountDetail">#</td></tr>                    
-                	
+                		<tr><td>글 번호</td><td>{{board.boardId}}</td></tr>
+                		<tr><td>제목</td><td>{{board.title}}</td></tr>
+                		<tr><td>내용</td><td> {{board.content}}</td></tr>
+                		<tr><td>작성자</td><td> {{board.userName}}</td></tr>
+                		<tr><td>작성일시</td><td> {{ board.regDt.date  | makeDateStr('.') }}  </td></tr>
+                		<tr><td>조회수</td><td>{{board.readCount}}</td></tr>                    
+                
                			<!-- 첨부 파일 -->
                			<tr><td colspan="2">첨부파일</td></tr>
                 		<tr><td colspan="2" id="fileListDetail">#</td></tr>
@@ -35,8 +35,25 @@
 </template>
 
 <script>
+
+import util from "@/common/util.js" 
+
 export default {
-    
+  data(){
+   
+  },
+  props: [ 'board' ],
+
+  method: {
+    printProps() {
+      console.log(this.board)
+    }
+  },
+  filters: {
+        makeDateStr: function( date, type ){
+            return util.makeDateStr( date.year, date.month, date.day, type ); // import 한 util 을 이용해서 filter
+        }
+    }
 }
 </script>
 
