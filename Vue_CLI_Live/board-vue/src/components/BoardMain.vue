@@ -19,7 +19,7 @@
                     </tr>
                 </thead>
 
-                <tr style="cursor:pointer" v-for="(board, index) in list" :key="index" data-boardId=${boardId}  @click="showDetailModal(board)"  v-bind:board="board" >
+                <tr style="cursor:pointer" v-for="(board, index) in list" :key="index"  @click="boardDetail(board.boardId)"  >
                     <td> {{ board.boardId }}</td>
                     <td> {{ board.userName }} </td>
                     <td> {{ board.title }} </td>
@@ -41,7 +41,10 @@
             <button class="btn btn-primary" type="button" @click="showInsertModal">글쓰기</button>
         </div>
         <insert-modal v-on:call-parent-insert="closeAfterInsert"></insert-modal>
-        <detail-modal v-bind:board="board"  ></detail-modal>
+        <detail-modal v-bind:board="board" 
+                        v-on:call-parent-change-to-update="changeToUpdate" v-on:call-parent-change-to-delete="changeToDelete"
+        ></detail-modal>
+        <update-modal  v-bind:board="board" v-on:call-parent-update="closeAfterUpdate"></update-modal>
     </div>
 </template>
 
@@ -52,12 +55,14 @@ import util from "@/common/util.js"
 import PaginationUi from './PaginationUI.vue'
 
 import InsertModal from "@/components/modals/InsertModal.vue"; // vue 컴포넌트 
+import DetailModal from "@/components/modals/DetailModal.vue";
+import UpdateModal from "@/components/modals/UpdateModal.vue";
+
 import { Modal } from "bootstrap"; // vue 컴포넌트에서 bootstrap modal을 사요용하기 위함.
 
-import DetailModal from "@/components/modals/DetailModal.vue";
 
 export default {
-    components: { PaginationUi, InsertModal, DetailModal },
+    components: { PaginationUi, InsertModal, DetailModal, UpdateModal },
     data(){
         return {
             limit: 10,
@@ -74,10 +79,21 @@ export default {
 
             // modal
             insertModal: null, // bootstrap Modal 객체를 할당( ui component 를 전달 )
-
             detailModal: null,
+            UpdateModal: null,
 
-            board:{},
+            // detail
+            board:{
+                boardId: 0,
+                title: "",
+                content: "",
+                userName: "",
+                regDate: "", // 백엔드로부터 받는 dto는 regDt만 받는데 이를 분해해서 regDate, regTime로 나누려는 생각
+                regTime:"",
+                readCount: 0,
+                fileList: [],
+                sameUser: false,
+            },
        
 
         }
@@ -126,16 +142,87 @@ export default {
             this.insertModal.hide();
             this.boardList();
         },
-        showDetailModal(board) {
-          
-            this.board = board
-            console.log(this.board)
-            console.log(this.board.regDt.date.day)
-            this.detailModal.show();
-            
-     
+        closeAfterUpdate(){
+            this.updateModal.hide();
+            this.boardList();
+        },
+        changeToDelete(){
+            this.detailModal.hide();
+            var $this = this;
+            this.$alertify.confirm(
+                "이 글을 삭제하시겠습니까?",
+                // yes
+                function(){
+                    // this.boardDelete(); // 이렇게 쓰면 boardMain component인것 같지만.. callback처리하는 녀석으로 됨.  undefined. $this로받아주기
+                    $this.boardDelete();
+                },
+                // no
+                function(){
+                    console.log("canceled!!!!")
+                }
+            )
+        },
+        async boardDelete() { 
+            try{
+                let response  = await http.delete('/boards/' + this.board.boardId);
+                let {data} = response;
 
-        }
+                if( data.result == "login" ){
+                    this.$router.push("/login")
+                }else {
+                    this.$alertify.success("글이 삭제되었습니다.");
+                    this.boardList();
+                }
+
+            } catch(error){
+                console.error(error);
+                this.$alertify.error('서버에 문제가 생겼습니다.');   
+            }
+        },  
+        async boardDetail(boardId) {
+            // 백엔드 요청 - 결과
+            // DetailModal <- 결과 : data 항목에 board 객체를 추가하고 props로 DetailModal에 넘겨준다. 백엔드요청 결과를 data의 board를 변경하면 자동 반영
+            // DetailModal show
+            try{
+                let response = await http.get("/boards/" + boardId);
+                let { data } = response;
+                // let { data } = await http.get("/boards/" + boardId);
+
+                if( data.result == "login" ){
+                    this.$router.push("/login")
+                }else {
+                    console.log(data.dto)
+                    // 날짜, 시간 분리
+                    let { regDt } = data.dto;
+                    let boardNew = {
+                        regDate: util.makeDateStr(regDt.date.year, regDt.date.month, regDt.date.day, "/"),
+                        regTime: util.makeTimeStr(regDt.time.hour, regDt.time.minute, regDt.time.second, "."),
+                        ...data.dto // 3 dot operator rest
+                    }
+
+                    // 현재 board 교체
+                    this.board = boardNew;
+
+                    // object 변화를 감지하려면 , 교체하는 방식을 써야함.
+                    // board 를 직접 바꾸려는 작업을 하려면 ? board 객체가 아니라 id title등을 하나하나 보내야 함.
+                    // 객체를 통으로 보내면 변화를 감지하지 못함!
+
+                    this.detailModal.show();
+
+                }
+
+            }catch(error){
+                console.error(error);
+                this.$alertify.error('서버에 문제가 생겼습니다.');          
+            }  
+        },
+            
+        changeToUpdate(){
+            this.detailModal.hide();
+            this.updateModal.show();
+        },
+  
+        
     },
     created: function() {
         // vue 인스턴스가 만들어 질 때 수행이 됨.
@@ -145,6 +232,8 @@ export default {
         // 모달 객체를 생성해서 data의 변수에 할당
         this.insertModal = new Modal(document.querySelector("#insertModal"));
         this.detailModal = new Modal(document.querySelector("#detailModal"));
+        this.updateModal = new Modal(document.querySelector("#updateModal"));
+        
     },
     filters: {
         makeDateStr: function( date, type ){

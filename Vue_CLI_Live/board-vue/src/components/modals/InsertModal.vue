@@ -72,6 +72,7 @@ export default {
       this.title = '';
       this.CKEditor.setData('');
       this.attachFile = false;
+      this.fileList = [];
       document.querySelector("#inputFileUploadInsert").value='';
 
     },
